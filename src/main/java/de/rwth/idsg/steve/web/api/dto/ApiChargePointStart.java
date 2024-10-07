@@ -18,34 +18,44 @@
  */
 package de.rwth.idsg.steve.web.api.dto;
 
-//import de.rwth.idsg.steve.ocpp.OcppTransport;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
-//import java.util.Collections;
-//import java.util.List;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
-//import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 /**
  * @author fnkbsi
  * @since 18.10.2023
  */
-
 @Getter
 @Setter
-//@RequiredArgsConstructor
 public class ApiChargePointStart {
-    @Schema(description = "Charge Box ID")
+    
+    @NotNull
+    @Schema(description = "Charge Box ID", required = true)
     private String chargeBoxId;
-    @Schema(description = "Connector ID")
+    
+    @NotNull
+    @Schema(description = "Connector ID", required = true)
     private Integer connectorId;
-    @Schema(description = "OCPP Tag")
+    
+    @NotNull
+    @Schema(description = "OCPP Tag", required = true)
     private String ocppTag;
 
-    public ApiChargePointStart(String chargeBoxId, Integer connectorId, String ocppTag) {
+    @JsonCreator
+    public ApiChargePointStart(
+            @JsonProperty("chargeBoxId") String chargeBoxId,
+            @JsonProperty("connectorId") Integer connectorId,
+            @JsonProperty("ocppTag") String ocppTag) {
         this.chargeBoxId = chargeBoxId;
         this.connectorId = connectorId;
         this.ocppTag = ocppTag;
     }
 
+    // Default constructor needed for Spring's @Valid annotation
+    public ApiChargePointStart() {
+    }
 }
